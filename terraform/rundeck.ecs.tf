@@ -149,9 +149,7 @@ variable "sso_configuration" {
 locals {
   default_tags = {
     environment   = var.environment_configuration["environment_name"][0]
-    business-unit = "SRC"
-    department    = "SRE"
-    project       = "rundeck"
+    project       = var.project
     generated-by  = "terraform"
   }
 }
