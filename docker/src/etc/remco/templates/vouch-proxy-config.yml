@@ -1,0 +1,50 @@
+# Vouch Proxy configuration
+# bare minimum to get Vouch Proxy running with adfs
+ 
+vouch:
+  # set allowAllUsers: true to use Vouch Proxy to just accept anyone who can authenticate to ADFS
+  allowAllUsers: true
+  logLevel: {{ getv("/sso/log/level", "info") }}
+  cookie:
+{% if getv("/sso/protected/domain/scheme", "https") == "http" %}
+    secure: false
+{% endif %}
+    domain: {{ getv("/sso/protected/domain", "") }}
+  #testing: true
+  
+  document_root: /sso
+
+  headers:
+    jwt: X-Vouch-Token
+    querystring: access_token
+    idtoken: X-Vouch-IdP-IdToken
+    accesstoken: X-Vouch-IdP-AccessToken
+    redirect: X-Vouch-Request-URI
+    claimsheaderformat:
+        qualifier: ""
+        delimiter: "{{ getv("/rundeck/preauth/delimiter", ",") }}"
+    claims:
+     - group
+     - Email
+ 
+  jwt:
+    issuer: Vouch
+    compress: false
+ 
+  post_logout_redirect_uris:
+   - {{ getv("/sso/logout/url", "") }} #https://<adfs domain>/adfs/oauth2/logout
+ 
+oauth:
+  provider: adfs
+  client_id: {{ getv("/sso/client/id", "") }} #<client ID from adfs>
+  client_secret: {{ getv("/sso/client/secret", "") }} #<client secret from adfs>
+  auth_url: {{ getv("/sso/auth/url", "") }} #https://<adfs domain>/adfs/oauth2/authorize/
+  token_url: {{ getv("/sso/token/url", "") }} # https://<adfs fomain>/adfs/oauth2/token/
+  relying_party_id: {{ getv("/sso/relying/party/id", "") }} #<whatever you set in adfs... usually protected domain> 
+  scopes:
+    - openid
+    - email
+    - profile
+    - allatclaims
+#allatclaims is IMPORTANT puts the claims inthe id token... vouch friendly
+  callback_url: {{ getv("/sso/protected/domain/scheme", "https") }}://{{ getv("/sso/protected/domain", "") }}/sso/auth

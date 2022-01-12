@@ -1,0 +1,4 @@
+[[template]]
+    src         = "${REMCO_TEMPLATE_DIR}/nginx-rundeck-reverse-proxy.conf"
+    dst         = "/etc/nginx/sites-enabled/nginx-rundeck-reverse-proxy.config"
+    mode        = "0644"

@@ -1,0 +1,4 @@
+[[template]]
+    src         = "${REMCO_TEMPLATE_DIR}/vouch-proxy-config.yml"
+    dst         = "/vouch-proxy/config/config.yml"
+    mode        = "0644"
