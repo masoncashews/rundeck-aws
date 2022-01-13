@@ -10,10 +10,10 @@ To have Rundeck Community running in a highly available architecture with SSO fo
 &nbsp;
 
 ## Things to come
-* [ ] To user Supervisor to control the threads
+* [ ] Use `supervisor` to control the threads
 * [ ] Expand beyond ADFS for SSO
-* [ ] To make SSO optional
-* [ ] Add a API Proxy to mimic *Advanced Webhooks* offered by Rundeck Enterprise
+* [ ] Make SSO optional
+* [ ] Add an API Proxy to mimic *Advanced Webhooks* offered by Rundeck Enterprise
 * [ ] Ditch the fork of Vouch-Proxy and use OpenResty NGINX with a module to rewrite headers
 
 &nbsp;
@@ -36,7 +36,7 @@ While Rundeck does provide an image for it's application, in order to achieve th
 * This is a multi stage docker file, because we have to compile an open source GO program for the SSO requirement.
 * Use `golang:1.17.2` to build https://github.com/masoncashews/vouch-proxy-rundeck 
   * This is a fork of https://github.com/vouch to allow for customer qualifiers of claims values.  *Vouch qualifies all claims with " which Rundeck doesn't like.*
-* From there it copies the compiled application to an image that starts with a base of `rundeck/rundeck:3.4.3`
+* From there it copies the compiled application to an image that starts with a base of `rundeck/rundeck:<some tag>`
 * It installs components required for Rundeck and SSO including:
   * nginx
   * python
@@ -71,7 +71,7 @@ New environment variables
 * `SSO_RELYING_PARTY_ID`: The relying party id from ADFS.  Can be anything but is usually the protected domain.
 * `SHARED_FILES_PATH`: This is used to put all the logs and shareable rundeck files in a central location.  Important for a HA environment.
   * EFS mount should be the target.
-* `VOUCH_DELAY`: This is how long to delay Vouch from starting,  in seconds.  This should be a long enough for Rundeck to finish starting (usually about a minute) and so the startup script can sync libraries to the shared location before starting Vouch-Proxy.
+* `VOUCH_DELAY`: This is how long to delay Vouch from starting,  in seconds.  This should be a long enough for Rundeck to finish starting (usually about a minute), so the startup script can sync libraries to the shared location before starting Vouch-Proxy.
   * Defaults to 10 seconds.
 
 #### Typical Environment Setup for the container
