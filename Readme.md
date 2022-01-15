@@ -15,6 +15,7 @@ To have Rundeck Community running in a highly available architecture with SSO fo
 * [ ] Make SSO optional
 * [ ] Add an API Proxy to mimic *Advanced Webhooks* offered by Rundeck Enterprise
 * [ ] Ditch the fork of Vouch-Proxy and use OpenResty NGINX with a module to rewrite headers
+* [ ] Automate a pipleline to build and publish a docker container
 
 &nbsp;
 ## Architecture
